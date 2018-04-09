@@ -1,0 +1,41 @@
+from urllib import request
+import re
+import codecs
+from distutils.filelist import findall
+from bs4 import BeautifulSoup
+url='http://movie.douban.com/top250?format=text'
+web=request.urlopen(url)
+contents=web.read()
+#print(web.read())
+soup=BeautifulSoup(contents,'html.parser')
+print("豆瓣电影TOP250" + "\n" +" 影片名              评分       评价人数     链接 ")
+for tag in soup.find_all('div',class_='info'):
+   # print(tag)
+    m_name=tag.find('span',class_='title').get_text()
+    m_score=float(tag.find('span',class_='rating_num').get_text())
+    m_people=tag.find('div',class_='star')# 获取当前class=star项目下的内容
+    m_content=m_people.findAll('span')# 获取当前项目下的所有的 特征为‘span’的内容
+    print("<<<<<<<")
+    print(m_content[3].contents[0])
+    print("<<<<<<<",m_content[3].contents[0])
+   #……………………………………………………………………#
+    m_peopleCount=m_content[3].contents[0]  # 在包含的所有内容中获取自己想得到的  #但不理解最后一个数组什么意思
+   #……………………………………………………………………#
+
+    m_link=tag.find('a').get('href')      #  获取电影链接
+    print(m_name+"      "+str(m_score)+"      "+m_peopleCount+"      "+m_link)
+
+
+# page = request.urlopen('http://movie.douban.com/top250?format=text')
+# contents = page.read()
+#  #print(contents)
+# soup = BeautifulSoup(contents,"html.parser")
+# print("豆瓣电影TOP250" + "\n" +" 影片名              评分       评价人数     链接 ")
+# for tag in soup.find_all('div', class_='info'):
+#    # print tag
+#     m_name = tag.find('span', class_='title').get_text()
+#     m_rating_score = float(tag.find('span',class_='rating_num').get_text())
+#     m_people = tag.find('div',class_="star")
+#     m_span = m_people.findAll('span')
+#     m_peoplecount = m_span[3].contents[0]
+#     m_url=tag.find('a').get('href')
